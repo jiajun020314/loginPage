@@ -12,27 +12,18 @@ import com.example.loginpage.models.Users
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 
 class MyAdapter(private val usersList: ArrayList<Users>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
-    interface OnDeleteClickListener {
-        fun onDeleteClick(position: Int)
-    }
-
 
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private lateinit var onDeleteClickListener: OnDeleteClickListener
         private lateinit var firebaseAuth: FirebaseAuth
         private lateinit var database: FirebaseDatabase
         private lateinit var reference: DatabaseReference
 
-        fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
-            onDeleteClickListener = listener
-        }
+
 
 
         val tvName: TextView = itemView.findViewById(R.id.rCusername)
@@ -42,7 +33,6 @@ class MyAdapter(private val usersList: ArrayList<Users>) : RecyclerView.Adapter<
         val tvUserId : TextView = itemView.findViewById(R.id.rcUserId)
 
         private val buttonEdit: Button = itemView.findViewById(R.id.edit)
-        private val buttonDelete: Button = itemView.findViewById(R.id.delete)
 
 
         init {
@@ -66,25 +56,13 @@ class MyAdapter(private val usersList: ArrayList<Users>) : RecyclerView.Adapter<
 
             }
 
-            buttonDelete.setOnClickListener {
 
-                 val dbReference = Firebase.database.getReference("Users")
-                val position = adapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    // Call the interface method to notify the activity/fragment
-                    onDeleteClickListener.onDeleteClick(position)
-                    dbReference.child(tvUserId.text.toString()).removeValue()
-
-
-
-                }
 
 
 
             }
 
 
-        }
 
 
     }
