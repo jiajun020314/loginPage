@@ -105,8 +105,6 @@ class MainActivity : AppCompatActivity() {
                         reference = FirebaseDatabase.getInstance().getReference("Users")
                         val user = FirebaseAuth.getInstance().currentUser
                         val userId = user?.uid
-                        val username = user?.displayName.toString()
-                        val email = user?.email
                         val signIn = "YAHOO"
                         if (userId != null) {
                             if (userId == user?.uid) {

@@ -5,5 +5,6 @@ data class Orders(
     val orderDate : String ? =null,
     val orderAmount :String ? = null,
     val orderStatus : String ? =null,
+    val userId : String ? =null,
 
 )

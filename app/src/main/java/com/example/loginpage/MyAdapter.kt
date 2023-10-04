@@ -1,21 +1,112 @@
 package com.example.loginpage
 
+import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.loginpage.models.Users
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
+
 
 class MyAdapter(private val usersList: ArrayList<Users>) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
 
+    interface OnDeleteClickListener {
+        fun onDeleteClick(position: Int)
+    }
 
 
+
+    class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private lateinit var onDeleteClickListener: OnDeleteClickListener
+        private lateinit var firebaseAuth: FirebaseAuth
+        private lateinit var database: FirebaseDatabase
+        private lateinit var reference: DatabaseReference
+
+        fun setOnDeleteClickListener(listener: OnDeleteClickListener) {
+            onDeleteClickListener = listener
+        }
+
+
+        val tvName: TextView = itemView.findViewById(R.id.rCusername)
+        val tvPhone: TextView = itemView.findViewById(R.id.rCphone)
+        val tvSign: TextView = itemView.findViewById(R.id.rCsignIn)
+        val tvAdd: TextView = itemView.findViewById(R.id.rcAddress)
+        val tvUserId : TextView = itemView.findViewById(R.id.rcUserId)
+
+        private val buttonEdit: Button = itemView.findViewById(R.id.edit)
+        private val buttonDelete: Button = itemView.findViewById(R.id.delete)
+
+
+        init {
+
+
+            buttonEdit.setOnClickListener {
+                val bundle = Bundle().apply {
+
+                    putString("UserId",tvUserId.text.toString())
+                    putString("username",tvName.text.toString())
+                    putString("phone number",tvPhone.text.toString())
+                    putString("address",tvAdd.text.toString())
+
+
+                }
+
+                val intent = Intent(itemView.context, UpdateUserActivity::class.java)
+                intent.putExtras(bundle) // Pass the bundle data as extras
+                itemView.context.startActivity(intent)
+
+
+            }
+
+            buttonDelete.setOnClickListener {
+
+                 val dbReference = Firebase.database.getReference("Users")
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    // Call the interface method to notify the activity/fragment
+                    onDeleteClickListener.onDeleteClick(position)
+                    dbReference.child(tvUserId.text.toString()).removeValue()
+
+
+
+                }
+
+
+
+            }
+
+
+        }
+
+
+    }
+
+
+
+    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
+        holder.tvUserId.text = usersList[position].userId
+        holder.tvName.text = usersList[position].username
+        holder.tvPhone.text = usersList[position].phone
+        holder.tvSign.text = usersList[position].signIn
+        holder.tvAdd.text = usersList[position].address
+
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
 
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.user_item,
-            parent,false)
+        val itemView = LayoutInflater.from(parent.context).inflate(
+            R.layout.user_item,
+            parent, false
+        )
         return MyViewHolder(itemView)
     }
 
@@ -24,29 +115,23 @@ class MyAdapter(private val usersList: ArrayList<Users>) : RecyclerView.Adapter<
         return usersList.size
     }
 
-    override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-
-        val currentUsers = usersList[position]
-
-
-        holder.tvName.text = usersList[position].username
-        holder.tvPhone.text = usersList[position].phone
-        holder.tvSign.text = usersList[position].signIn
-        holder.tvAdd.text = usersList[position].address
-
-
-
-    }
-
-    class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
-
-        val tvName : TextView = itemView.findViewById(R.id.rCusername)
-        val tvPhone: TextView = itemView.findViewById(R.id.rCphone)
-        val tvSign : TextView = itemView.findViewById(R.id.rCsignIn)
-        val tvAdd : TextView = itemView.findViewById(R.id.rcAddress)
-
-
-    }
-
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -8,8 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.loginpage.databinding.ActivityFeedbackBinding
 import com.example.loginpage.models.Orders
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class Feedback : AppCompatActivity() {
 
@@ -31,24 +34,29 @@ class Feedback : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
-
         val user = FirebaseAuth.getInstance().currentUser
-        val userId = user?.uid.toString()
-        dbref = FirebaseDatabase.getInstance().getReference("Users")
-        dbref.child(userId).child("orderId").get().addOnSuccessListener {
-            if(it.exists()){
-                val orderId = it.value.toString()
-                getData(orderId)
+        val userId = user?.uid
+        val databaseReference = FirebaseDatabase.getInstance().reference.child("Orders")
+
+        databaseReference.orderByChild("userID").equalTo(userId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                for (orderSnapshot in dataSnapshot.children) {
+                    val orderId = orderSnapshot.key // This is the orderId
+                    // Do something with orderId, for example, print it
+                    if (orderId != null) {
+                        getData(orderId)
+                    }
+                }
             }
 
-        }
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Handle errors
+                println("Error: ${databaseError.message}")
+            }
+        })
 
 
-
-
-        }
+    }
 
 
 
@@ -58,7 +66,7 @@ class Feedback : AppCompatActivity() {
 
 
         dbref = FirebaseDatabase.getInstance().getReference("Orders")
-        dbref.child(orderId.toString()).get().addOnSuccessListener {
+        dbref.child(orderId).get().addOnSuccessListener {
             if(it.exists()){
                 val orderId = it.child("orderID").value
                 val orderAmount = it.child("orderAmount").value
@@ -79,14 +87,11 @@ class Feedback : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
-                if(rating != null && feedback != null) {
+
                     binding.zeroPending.text = "There are no feedback to be updated"
-                    binding.addFeedback.setOnClickListener {
 
-                        Toast.makeText(this,"No Order to Be updated now",Toast.LENGTH_SHORT).show()
-                    }
 
-                }
+
 
 
 

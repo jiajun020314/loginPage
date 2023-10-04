@@ -70,7 +70,7 @@ class EditProfile : Activity() {
         }
 
         imageView = findViewById(R.id.profile_picture_image_view)
-        val uploadButton = findViewById<Button>(R.id.upload)
+        val uploadButton = findViewById<Button>(R.id.adminUpload)
 
         // Get a reference to the Firebase Storage location where the profile picture will be stored
         storageRef = FirebaseStorage.getInstance().reference
@@ -97,7 +97,7 @@ class EditProfile : Activity() {
         }
 
 
-        val deleteButton = findViewById<Button>(R.id.remove)
+        val deleteButton = findViewById<Button>(R.id.adminRemove)
         deleteButton.setOnClickListener {
             if (userId != null) {
 

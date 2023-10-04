@@ -1,5 +1,6 @@
 package com.example.loginpage
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -49,29 +50,31 @@ class CoverPage :AppCompatActivity () {
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
-        val user = FirebaseAuth.getInstance().currentUser
+
 
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
             reference = FirebaseDatabase.getInstance().getReference("Users")
-
+        val user = FirebaseAuth.getInstance().currentUser
             val userId = user?.uid
+            Log.d("UserID", "User ID: $userId")
             if (userId != null) {
                     reference.child(userId).addValueEventListener(object : ValueEventListener {
+                        @SuppressLint("SetTextI18n")
                         override fun onDataChange(snapshot: DataSnapshot) {
                             users = snapshot.getValue(Users::class.java)!!
-                            if(users.username ==null) {
-                                binding.newUsername.hint = "Update the username"
+                            if(users.username == null) {
+                                binding.newUsername.text = "Update the username"
                             }else{
                                 binding.newUsername.text = users.username
                             }
                             if (users.phone == null) {
-                                binding.newPhone.hint = "Update the phone number"
+                                binding.newPhone.text = "Update the phone number"
                             } else {
                                 binding.newPhone.text = users.phone
                             }
                             if (users.address == null) {
-                                binding.newAddress.hint = "Update the Address"
+                                binding.newAddress.text = "Update the Address"
                             }else{
                                 binding.newAddress.text = users.address
                             }
@@ -87,7 +90,7 @@ class CoverPage :AppCompatActivity () {
 
  }
         imageView = findViewById(R.id.profile_picture_image_view)
-        val uploadButton = findViewById<Button>(R.id.upload)
+        val uploadButton = findViewById<Button>(R.id.adminUpload)
 
         // Get a reference to the Firebase Storage location where the profile picture will be stored
         storageRef = FirebaseStorage.getInstance().reference

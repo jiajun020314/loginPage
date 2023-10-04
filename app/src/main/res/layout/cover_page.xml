@@ -68,8 +68,8 @@
 
     <LinearLayout
         android:id="@+id/linearLayout3"
-        android:layout_width="407dp"
-        android:layout_height="166dp"
+        android:layout_width="401dp"
+        android:layout_height="201dp"
         android:layout_marginVertical="6dp"
         android:layout_marginTop="48dp"
         android:orientation="vertical"
@@ -115,7 +115,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
-                android:text="Phone Number"
+                android:text="Phone Number :"
                 android:textColor="@color/black"
                 android:textSize="26sp"
                 android:textStyle="bold"
@@ -123,7 +123,7 @@
 
             <TextView
                 android:id="@+id/newPhone"
-                android:layout_width="wrap_content"
+                android:layout_width="181dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="20"
@@ -142,7 +142,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="6dp"
-                android:text="Address"
+                android:text="Address :"
                 android:textColor="@color/black"
                 android:textSize="26sp"
                 android:textStyle="bold"

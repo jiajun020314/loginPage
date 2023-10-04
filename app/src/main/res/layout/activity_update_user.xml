@@ -4,13 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AdminCrudUsers">
+    tools:context=".UpdateUserActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-
-        android:id="@+id/recycleView"
-        android:layout_width="417dp"
-        android:layout_height="729dp"
-        tools:layout_editor_absoluteX="-6dp"
-        tools:listitem="@layout/user_item" />
 </androidx.constraintlayout.widget.ConstraintLayout>

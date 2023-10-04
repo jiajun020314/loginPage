@@ -1,6 +1,7 @@
 package com.example.loginpage
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +43,12 @@ class AdminCrudUsers :AppCompatActivity () {
               if(snapshot.exists()){
                   for(dataSnapShot in snapshot.children){
                       val user = dataSnapShot.getValue(Users::class.java)
+                      if (user != null) {
+                          user.userId = dataSnapShot.key.toString()
+                          Log.d("UserId","UserId = ${user.userId}")
+                      }
+
+
                       if(!usersArrayList.contains(user)){
                           usersArrayList.add(user!!)
                       }
@@ -58,9 +65,8 @@ class AdminCrudUsers :AppCompatActivity () {
 
 
 
-
-
     }
+
 
 }
 

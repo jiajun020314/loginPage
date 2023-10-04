@@ -82,8 +82,10 @@ class GoogleActivity : AppCompatActivity() {
 
 
 
+
                             }else{
                                 reference.child(userId).child("signIn").setValue(signIn)
+
                             }
 
                         } else {
